@@ -2,11 +2,17 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 const isRegister = ref(true)
 const formModel = ref({
   username: '',
   password: '',
-  repassword: ''
+  repassword: '',
+  gender: '',
+  age: '',
+  job: ''
 })
 
 const rules = {
@@ -39,26 +45,36 @@ const rules = {
       },
       trigger: 'blur'
     }
-  ]
+  ],
+  gender: [{ required: true, message: '请选择性别', trigger: 'blur' }],
+  age: [{ required: true, message: '请输入年龄', trigger: 'blur' }],
+  job: [{ required: true, message: '请输入职位', trigger: 'blur' }]
 }
 
 // 注册
-const register = (username, password) => {
-  localStorage.setItem(
-    'userInfo',
-    JSON.stringify({
-      username: username,
-      password: password
-    })
-  )
-  alert('注册成功！')
-  isRegister.value = true
+const register = (username, password, gender, age, job) => {
+  if (username && password && gender && age && job) {
+    localStorage.setItem(
+      'userInfo',
+      JSON.stringify({
+        username: username,
+        password: password,
+        gender: gender,
+        age: age,
+        job: job
+      })
+    )
+    alert('注册成功！')
+    isRegister.value = true
+    router.push('/') // 跳转到根路由
+  }
 }
 // 判断是否注册
 onMounted(() => {
   const user = localStorage.getItem('userInfo')
-  console.log(user)
-  if (user) {
+  const userObj = JSON.parse(user)
+  console.log(userObj)
+  if (userObj != null) {
     isRegister.value = false
   }
 })
@@ -78,6 +94,7 @@ const preregister = async () => {
         <span class="green1">⚙️管理系统</span>
       </h1>
       <div class="form-body">
+        <!-- 注册 -->
         <el-form
           :model="formModel"
           :rules="rules"
@@ -112,13 +129,30 @@ const preregister = async () => {
               placeholder="请输入再次密码"
             ></el-input>
           </el-form-item>
+          <el-radio-group v-model="formModel.gender" prop="gender">
+            <el-radio label="男" />
+            <el-radio label="女" />
+          </el-radio-group>
+          <el-form-item label="年龄" prop="age">
+            <el-input v-model="formModel.age" placeholder="请输入年龄" />
+          </el-form-item>
+          <el-form-item label="职位" prop="job">
+            <el-input v-model="formModel.job" placeholder="请输入职位" />
+          </el-form-item>
           <el-form-item>
             <el-button
               class="button"
               type="primary"
               auto-insert-space
               @click="
-                register(formModel.username, formModel.password), preregister()
+                register(
+                  formModel.username,
+                  formModel.password,
+                  formModel.gender,
+                  formModel.age,
+                  formModel.job
+                ),
+                  preregister()
               "
             >
               注册
@@ -130,6 +164,7 @@ const preregister = async () => {
             </el-link>
           </el-form-item>
         </el-form>
+        <!-- 登录 -->
         <el-form
           :model="formModel"
           ref="form"
@@ -193,7 +228,6 @@ const preregister = async () => {
     clip-path: polygon(0% 0%, 90% 0%, 100% 100%, 0% 100%);
     background-color: rgba(243, 186, 243, 0.25);
     .title {
-      margin-top: 15%;
       text-align: center;
       color: #162b22;
       .green0 {
