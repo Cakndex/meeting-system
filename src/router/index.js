@@ -6,6 +6,7 @@ const router = createRouter({
     {
       path: '/',
       component: () => import('@/views/layout/index.vue'),
+      redirect: '/base',
       children: [
         // 会议室基础面板
         {

@@ -7,7 +7,7 @@ const router = useRouter()
 const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 const username = ref(userInfo.username)
 // 获取当前路由地址
-const currentPath = ref('/base')
+const currentPath = ref(router.currentRoute.value.path)
 const getpath = (path) => {
   router.push(path)
   console.log(path)
@@ -152,7 +152,7 @@ nav {
   position: fixed;
   left: 0;
   top: 0;
-  background-color: black;
+  background-color:rgba(0, 0, 0, 0.8);
   color: #fff;
   p {
     text-align: center;
