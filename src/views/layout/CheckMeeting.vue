@@ -2,10 +2,10 @@
 
 <template>
   <HeadTitle>
-    <template #content>会议室基础</template>
+    <template #content>审核会议</template>
   </HeadTitle>
   <section id="body">
-    <h1>这是会议室基础</h1>
+    <h1>这是审核会议</h1>
   </section>
 </template>
 

@@ -78,6 +78,7 @@
 .content {
   font-family: Arial, sans-serif;
   margin: 20px;
+  margin-left: 50px;
   h1 {
     text-align: center;
     color: #333;

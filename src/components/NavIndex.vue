@@ -39,10 +39,34 @@ const getpath = (path) => {
           >🤝会议室基础</a
         >
       </div>
-      <div><a href="#">✍️预定会议</a></div>
-      <div><a href="#">🔎审核会议</a></div>
-      <div><a href="#">🧐查看会议</a></div>
-      <div><a href="#">👓查看会议室</a></div>
+      <div>
+        <a
+          :class="{ active: currentPath === '/schedule' }"
+          @click="getpath('/schedule')"
+          >✍️预定会议</a
+        >
+      </div>
+      <div>
+        <a
+          :class="{ active: currentPath === '/check' }"
+          @click="getpath('/check')"
+          >🔎审核会议</a
+        >
+      </div>
+      <div>
+        <a
+          :class="{ active: currentPath === '/lookmeeting' }"
+          @click="getpath('/lookmeeting')"
+          >🧐查看会议</a
+        >
+      </div>
+      <div>
+        <a
+          :class="{ active: currentPath === '/lookroom' }"
+          @click="getpath('/lookroom')"
+          >👓查看会议室</a
+        >
+      </div>
     </section>
     <section id="info">
       <div>

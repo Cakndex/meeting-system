@@ -26,6 +26,26 @@ const router = createRouter({
         {
           path: 'rule',
           component: () => import('@/views/layout/RoomRule.vue')
+        },
+        // 预定会议
+        {
+          path: '/schedule',
+          component: () => import('@/views/layout/ScheduleMeeting.vue')
+        },
+        // 审核会议
+        {
+          path: '/check',
+          component: () => import('@/views/layout/CheckMeeting.vue')
+        },
+        // 查看会议
+        {
+          path: '/lookmeeting',
+          component: () => import('@/views/layout/LookMeeting.vue')
+        },
+        // 查看会议室
+        {
+          path: '/lookRoom',
+          component: () => import('@/views/layout/LookRoom.vue')
         }
       ]
     }
