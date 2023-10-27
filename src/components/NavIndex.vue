@@ -125,9 +125,8 @@ header {
     }
     .icon {
       float: right;
-      width: 12vw;
+      width: 20vw;
       height: 10vh;
-      margin-right: 10%;
 
       .avatar {
         float: left;
@@ -138,9 +137,10 @@ header {
       }
 
       .username {
-        float: right;
+        float: left;
         line-height: 10vh;
         font-weight: bold;
+        margin-left: 10px;
       }
     }
   }
@@ -152,7 +152,7 @@ nav {
   position: fixed;
   left: 0;
   top: 0;
-  background-color:rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);
   color: #fff;
   p {
     text-align: center;

@@ -44,6 +44,7 @@ const saveChanges = () => {
       localStorage.setItem('userInfo', JSON.stringify(userInfo.value))
       console.log(JSON.stringify(userInfo.value))
       isDisabled.value = true
+      location.reload()
     } else {
       // 表单校验不通过
       console.log('Form data is invalid. Please check the input fields.')

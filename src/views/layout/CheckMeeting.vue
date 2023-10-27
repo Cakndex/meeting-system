@@ -214,7 +214,7 @@ const tableData = ref([
     <el-table
       :data="tableData"
       :border="true"
-      style="width: 80%; margin-left: 10%; margin-bottom: 10%;"
+      style="width: 80%; margin-left: 10%; margin-bottom: 10%"
     >
       <el-table-column fixed prop="date" label="Date" width="150" />
       <el-table-column prop="name" label="Name" width="120" />
