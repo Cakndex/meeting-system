@@ -18,6 +18,7 @@
   height: 100vh;
   background-color: #e8e8e8;
   .content {
+    z-index: 5;
     position: fixed;
     right: 0;
     top: 10vh;

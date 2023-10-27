@@ -1,9 +1,18 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+// 路由
 const router = useRouter()
+// 获取用户信息
 const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 const username = ref(userInfo.username)
+// 获取当前路由地址
+const currentPath = ref('/base')
+const getpath = (path) => {
+  router.push(path)
+  console.log(path)
+  currentPath.value = path
+}
 </script>
 <template>
   <header>
@@ -23,16 +32,40 @@ const username = ref(userInfo.username)
     <p>⚙️管理员</p>
     <section id="meeting">
       <h1>🪸会议室</h1>
-      <div><a @click="router.push('/base')">🤝会议室基础</a></div>
+      <div>
+        <a
+          :class="{ active: currentPath === '/base' }"
+          @click="getpath('/base')"
+          >🤝会议室基础</a
+        >
+      </div>
       <div><a href="#">✍️预定会议</a></div>
       <div><a href="#">🔎审核会议</a></div>
       <div><a href="#">🧐查看会议</a></div>
       <div><a href="#">👓查看会议室</a></div>
     </section>
     <section id="info">
-      <div><a @click="router.push('/UserInfo')">🧑‍💻个人信息</a></div>
-      <div><a href="#">❗使用须知</a></div>
-      <div><a href="#">📑会议室使用说明</a></div>
+      <div>
+        <a
+          :class="{ active: currentPath === '/UserInfo' }"
+          @click="getpath('/UserInfo')"
+          >🧑‍💻个人信息</a
+        >
+      </div>
+      <div>
+        <a
+          :class="{ active: currentPath === '/read' }"
+          @click="getpath('/read')"
+          >❗使用须知</a
+        >
+      </div>
+      <div>
+        <a
+          :class="{ active: currentPath === '/rule' }"
+          @click="getpath('/rule')"
+          >📑会议室使用说明</a
+        >
+      </div>
     </section>
   </nav>
 </template>
@@ -42,6 +75,7 @@ const username = ref(userInfo.username)
   padding: 0;
   margin: 0;
 }
+// 头部导航
 header {
   position: fixed;
   top: 0;
@@ -87,6 +121,7 @@ header {
     }
   }
 }
+// 左侧导航
 nav {
   width: 15vw;
   height: 100vh;
@@ -131,5 +166,9 @@ nav {
   #info {
     margin-top: 30%;
   }
+}
+// 点击链接
+.active {
+  background-color: #1890ff;
 }
 </style>
