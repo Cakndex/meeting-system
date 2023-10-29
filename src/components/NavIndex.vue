@@ -107,6 +107,8 @@ header {
   width: 85vw;
   height: 10vh;
   background-color: #1890ff;
+  // 取消光标闪烁
+  caret-color: transparent;
   .container {
     // 垂直居中
     line-height: 10vh;
@@ -154,6 +156,8 @@ nav {
   top: 0;
   background-color: rgba(0, 0, 0, 0.8);
   color: #fff;
+  // 取消光标闪烁
+  caret-color: transparent;
   p {
     text-align: center;
     font-weight: 600;
