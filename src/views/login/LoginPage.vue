@@ -83,6 +83,23 @@ const form = ref()
 const preregister = async () => {
   await form.value.validate()
 }
+
+// 登录
+const login_username = ref('')
+const login_password = ref('')
+const login = () => {
+  const user = localStorage.getItem('userInfo')
+  const userObj = JSON.parse(user)
+  if (
+    login_username.value === userObj.username &&
+    login_password.value === userObj.password
+  ) {
+    alert('登录成功')
+    router.push('/')
+  } else {
+    alert('登录失败！请检查用户名或密码')
+  }
+}
 </script>
 
 <template>
@@ -178,14 +195,14 @@ const preregister = async () => {
           </el-form-item>
           <el-form-item>
             <el-input
-              v-model="formModel.username"
+              v-model="login_username"
               :prefix-icon="User"
               placeholder="请输入用户名"
             ></el-input>
           </el-form-item>
           <el-form-item>
             <el-input
-              v-model="formModel.password"
+              v-model="login_password"
               name="password"
               :prefix-icon="Lock"
               type="password"
@@ -200,7 +217,11 @@ const preregister = async () => {
             </div>
           </el-form-item>
           <el-form-item>
-            <el-button class="button" type="primary" auto-insert-space
+            <el-button
+              class="button"
+              type="primary"
+              auto-insert-space
+              @click="login()"
               >登录</el-button
             >
           </el-form-item>
