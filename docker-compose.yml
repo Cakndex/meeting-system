@@ -1,0 +1,62 @@
+version: '3.6'
+
+services:
+  backend:
+    build: '.'
+    container_name: backend-test
+    restart: unless-stopped
+    links:
+    - redis
+    - mysql
+    ports:
+    - 63000:8000
+    - 587:587
+    env_file:
+    - .env.example
+    networks:
+    - platform
+    extra_hosts:
+    - host.docker.internal:host-gateway 
+    dns:
+    - 114.114.114.114
+    - 8.8.8.8
+
+  redis: # https://hub.docker.com/_/redis
+    image: redis:7.0-alpine
+    container_name: redis-test
+    restart: unless-stopped
+    ports:
+    - 6379:6379
+    volumes:
+    - redis-data:/data
+    - ./conf/redis.conf:/etc/redis/redis.conf
+    networks:
+    - platform
+
+  mysql: # https://hub.docker.com/_/mysql
+    image: mysql:5.7
+    container_name: mysql-test
+    restart: unless-stopped
+    ports:
+    - 3306:3306
+    volumes:
+    - mysql-data:/var/lib/mysql
+    - ./conf/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+    environment:
+    - "MYSQL_ROOT_PASSWORD=123456" # change it when deploying
+    - "MYSQL_DATABASE=test-recruit" # change it when deploying
+    - "TZ=Asia/Shanghai"
+    networks:
+    - platform
+
+volumes:
+  redis-data:
+  mysql-data:
+
+networks:
+  platform:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.20.20.0/24
