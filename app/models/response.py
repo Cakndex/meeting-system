@@ -36,7 +36,7 @@ class UserInfoResponse(Status):
 
 
 class AdminCodeResponse(Status):
-    inviteCode: list = []
+    inviteCode: int = 0
 
 
 class MeetingResponse(Status):

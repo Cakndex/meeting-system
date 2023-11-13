@@ -25,7 +25,7 @@ async def meeting_add(
     room = Meeting(
         name=meeting_body.name,
         address=meeting_body.address,
-        capacity=",".join(meeting_body.facilities),
+        facility=",".join(meeting_body.facilities),
     )
     common_data.add(room)
     return return_status(Error.NoError, response)
@@ -38,11 +38,13 @@ async def meeting_change(
         meeting_body: MeetingAddRequest = Body()
 ):
     """修改会议室"""
-    room = Meeting(
-        name=meeting_body.name,
-        address=meeting_body.address,
-        capacity=",".join(meeting_body.facilities),
-    )
+    with SessionLocal() as sess:
+        room = sess.query(Meeting).filter_by(meetingId=meeting_body.id).first()
+    if room is None:
+        return return_status(Error.MeetingNotExist, response)
+    room.name = meeting_body.name,
+    room.address = meeting_body.address,
+    room.capacity = ",".join(meeting_body.facilities),
     common_data.update(room)
     return return_status(Error.NoError, response)
 
@@ -69,7 +71,7 @@ async def meeting_list(
     """获取会议室列表"""
     with SessionLocal() as sess:
         rooms = sess.query(Meeting).all()
-    return return_response(rooms, response)
+    return rooms
 
 
 @meetRouter.post("/check", dependencies=[AuthedUser(admin=True)])
@@ -119,4 +121,4 @@ async def meeting_checklist(
         )
         checkList.append(check1)
 
-    return return_response(CheckResponse(Checklist=checkList,status=Error.NoError), response)
+    return return_response(CheckResponse(Checklist=checkList, status=Error.NoError), response)

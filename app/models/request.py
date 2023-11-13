@@ -8,8 +8,8 @@ from pydantic import BaseModel
 
 
 class RegisterInRequest(BaseModel):
-    code: str
-    isAdmin: Optional[str]
+    code: Optional[str]
+    isAdmin: bool = False
     password: str
     telephone: str
     username: str
@@ -42,6 +42,7 @@ class ChangePasswordRequest(BaseModel):
 
 
 class MeetingAddRequest(BaseModel):
+    id: int = 0
     name: Optional[str]
     address: Optional[str]
     facilities: Optional[list[str]]

@@ -161,10 +161,10 @@ async def generate_invite_code(
         response: Response,
 ):
     """管理员生成管理员码"""
-    code = safety_utils.admin_code.generate_code()
+    code, error = safety_utils.admin_code.generate_code()
     return status.return_response(AdminCodeResponse(
-        status=code[1],
-        inviteCode=code[0]
+        status=error,
+        inviteCode=code
     ), response)
 
 

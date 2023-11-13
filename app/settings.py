@@ -14,8 +14,6 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_IN: int = 60 * 24 * 7  # 7 days
     # Redis
     REDIS_URL: str = 'redis://localhost:6379/0'
-    # Captcha
-    ReCAPTCHA_TOKEN: str
 
     class Config:
         env_file = '.env'

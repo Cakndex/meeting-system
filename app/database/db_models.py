@@ -18,6 +18,10 @@ class User(Base):
     banned = Column(Boolean, nullable=False, default=False)  # is banned
     telephone = Column(String(16), nullable=False)
 
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
+
 
 class Meeting(Base):
     __tablename__ = 'meetings'
@@ -27,6 +31,10 @@ class Meeting(Base):
     address = Column(String(256), nullable=False)
     # 设施，如投影仪，白板，麦克风等
     facility = Column(String(256), nullable=False)
+
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
 
 
 class IsCaptured(Base):
@@ -46,3 +54,7 @@ class IsCaptured(Base):
     reason = Column(String(256), nullable=False, default=" ")
     # 简介
     summary = Column(Text(), nullable=False)
+
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }

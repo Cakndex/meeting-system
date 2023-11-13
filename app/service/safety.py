@@ -76,23 +76,20 @@ class AdminCode:
 
     def generate_code(self):
         """生成邀请码"""
-        code_list = []
-        for i in range(100):
-            while True:
+        while True:
+            try:
+                code = str(random.randint(10000000, 99999999))
                 try:
-                    code = str(random.randint(10000000, 99999999))
-                    try:
-                        if redis_db.get(self.PREFIX + code) == self.VALUE:
-                            continue
-                    except RedisError:
-                        return "", Error.CodeReadError
-
-                    redis_db.set(self.PREFIX + code, self.VALUE)
-                    break
+                    if redis_db.get(self.PREFIX + code) == self.VALUE:
+                        continue
                 except RedisError:
-                    return "", Error.CodeWriteError
-            code_list.append(code)
-        return code_list, Error.NoError
+                    return "", Error.CodeReadError
+
+                redis_db.set(self.PREFIX + code, self.VALUE)
+                break
+            except RedisError:
+                return "", Error.CodeWriteError
+        return code, Error.NoError
 
     def check_code(self, code):
         """检查邀请码是否正确"""
