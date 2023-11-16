@@ -68,41 +68,27 @@ const logout = () => {
       </div>
       <div>
         <a
-          :class="{ active: currentPath === '/schedule' }"
-          @click="getpath('/schedule')"
-          >✍️预定会议</a
-        >
-      </div>
-      <div>
-        <a
-          :class="{ active: currentPath === '/check' }"
-          @click="getpath('/check')"
-          >🔎审核会议</a
-        >
-      </div>
-      <div>
-        <a
-          :class="{ active: currentPath === '/lookmeeting' }"
-          @click="getpath('/lookmeeting')"
-          >🧐查看会议</a
-        >
-      </div>
-      <div>
-        <a
           :class="{ active: currentPath === '/lookroom' }"
           @click="getpath('/lookroom')"
           >👓查看会议室</a
         >
       </div>
-    </section>
-    <section id="info">
       <div>
         <a
-          :class="{ active: currentPath === '/UserInfo' }"
-          @click="getpath('/UserInfo')"
-          >🧑‍💻个人信息</a
+          :class="{ active: currentPath === '/lookroom' }"
+          @click="getpath('/addmeeting')"
+          >✨添加会议室</a
         >
       </div>
+      <div>
+        <a
+          :class="{ active: currentPath === '/lookmeeting' }"
+          @click="getpath('/adminuser')"
+          >🧐人员管理</a
+        >
+      </div>
+    </section>
+    <section id="info">
       <div>
         <a
           :class="{ active: currentPath === '/read' }"

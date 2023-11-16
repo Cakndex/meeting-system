@@ -47,6 +47,16 @@ const router = createRouter({
         {
           path: '/lookRoom',
           component: () => import('@/views/layout/LookRoom.vue')
+        },
+        // 添加会议室
+        {
+          path: '/addmeeting',
+          component: () => import('@/views/layout/AddMeeting.vue')
+        },
+        // 人员管理
+        {
+          path: '/adminuser',
+          component: () => import('@/views/layout/AdminUser.vue')
         }
       ]
     }
