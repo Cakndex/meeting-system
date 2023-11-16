@@ -1,17 +1,20 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
+// import axios from 'axios'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-
+import request from '@/utils/request'
+import useUserStore from '@/stores/user.js'
+const userStore = useUserStore()
 const router = useRouter()
 const isRegister = ref(true)
 const formModel = ref({
+  isAdmin: '',
   username: '',
   password: '',
   repassword: '',
-  gender: '',
-  age: '',
+  telephone: '',
   job: ''
 })
 
@@ -46,34 +49,63 @@ const rules = {
       trigger: 'blur'
     }
   ],
-  gender: [{ required: true, message: '请选择性别', trigger: 'blur' }],
-  age: [{ required: true, message: '请输入年龄', trigger: 'blur' }],
+
+  telephone: [{ required: true, message: '请输入电话号码', trigger: 'blur' }],
   job: [{ required: true, message: '请输入职位', trigger: 'blur' }]
 }
 
 // 注册
-const register = (username, password, gender, age, job) => {
-  if (username && password && gender && age && job) {
-    localStorage.setItem(
-      'userInfo',
-      JSON.stringify({
-        username: username,
+const register = (username, password, isAdmin, telephone, job) => {
+  if (username && password && isAdmin && telephone && job) {
+    request
+      .post('/user/register', {
+        isAdmin: isAdmin === '非管理员' ? false : true,
         password: password,
-        gender: gender,
-        age: age,
-        job: job
+        telephone: telephone,
+        username: username
       })
-    )
+      .then(function (response) {
+        console.log(response)
+        localStorage.setItem(
+          'userInfo',
+          JSON.stringify({
+            access: response.data.access,
+            username: username,
+            password: password,
+            isAdmin: isAdmin,
+            telephone: telephone,
+            job: job
+          })
+        ),
+          console.log(localStorage.getItem('userInfo'))
+        router.push('/')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    // axios
+    //   .post('http://113.54.237.236:63000/user/register', {
+    //     isAdmin: false,
+    //     password: password,
+    //     telephone: telephone,
+    //     username: username
+    //   })
+    //   .then(function (response) {
+    //     console.log(response)
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error)
+    //   })
+
     alert('注册成功！')
     isRegister.value = true
-    router.push('/') // 跳转到根路由
+    // router.push('/') // 跳转到根路由
   }
 }
 // 判断是否注册
 onMounted(() => {
   const user = localStorage.getItem('userInfo')
   const userObj = JSON.parse(user)
-  console.log(userObj)
   if (userObj != null) {
     isRegister.value = false
   }
@@ -88,17 +120,24 @@ const preregister = async () => {
 const login_username = ref('')
 const login_password = ref('')
 const login = () => {
-  const user = localStorage.getItem('userInfo')
-  const userObj = JSON.parse(user)
-  if (
-    login_username.value === userObj.username &&
-    login_password.value === userObj.password
-  ) {
-    alert('登录成功')
-    router.push('/')
-  } else {
-    alert('登录失败！请检查用户名或密码')
-  }
+  request
+    .post('/user/login', {
+      password: login_password.value,
+      username: login_username.value
+    })
+    .then(function (response) {
+      console.log(response)
+      if (response.status === 200) {
+        alert('登录成功')
+        // console.log(response)
+        userStore.setToken(response.data.access)
+        router.push('/')
+      }
+    })
+    .catch(function (error) {
+      alert('登录失败！请检查用户名或密码')
+      console.log(error)
+    })
 }
 </script>
 
@@ -146,12 +185,12 @@ const login = () => {
               placeholder="请输入再次密码"
             ></el-input>
           </el-form-item>
-          <el-radio-group v-model="formModel.gender" prop="gender">
-            <el-radio label="男" />
-            <el-radio label="女" />
+          <el-radio-group v-model="formModel.isAdmin" prop="isAdmin">
+            <el-radio label="管理员" />
+            <el-radio label="非管理员" />
           </el-radio-group>
-          <el-form-item label="年龄" prop="age">
-            <el-input v-model="formModel.age" placeholder="请输入年龄" />
+          <el-form-item label="电话" prop="telephone">
+            <el-input v-model="formModel.telephone" placeholder="请输入年龄" />
           </el-form-item>
           <el-form-item label="职位" prop="job">
             <el-input v-model="formModel.job" placeholder="请输入职位" />
@@ -165,8 +204,8 @@ const login = () => {
                 register(
                   formModel.username,
                   formModel.password,
-                  formModel.gender,
-                  formModel.age,
+                  formModel.isAdmin,
+                  formModel.telephone,
                   formModel.job
                 ),
                   preregister()

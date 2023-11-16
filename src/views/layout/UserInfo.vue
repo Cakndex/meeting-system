@@ -4,8 +4,8 @@ const user = JSON.parse(localStorage.getItem('userInfo'))
 const userInfo = ref({
   username: user.username, // 用户昵称
   password: user.password, // 用户密码
-  gender: user.gender, // 用户性别
-  age: user.age, // 用户年龄
+  telephone: user.telephone, // 用户电话
+  isAdmin: user.isAdmin, // 用户是否为管理员
   job: user.job // 用户职位
 })
 
@@ -87,16 +87,16 @@ const saveChanges = () => {
             style="width: 15vw"
           ></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="gender">
+        <el-form-item label="电话" prop="telephone">
           <el-input
-            v-model="userInfo.gender"
+            v-model="userInfo.telephone"
             :disabled="isDisabled"
             style="width: 10vw"
           ></el-input>
         </el-form-item>
-        <el-form-item label="年龄" prop="age">
+        <el-form-item label="管理权限" prop="isAdmin">
           <el-input
-            v-model="userInfo.age"
+            v-model="userInfo.isAdmin"
             :disabled="isDisabled"
             style="width: 10vw"
           ></el-input>
