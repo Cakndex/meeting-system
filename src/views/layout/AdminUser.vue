@@ -10,7 +10,7 @@ import {
 } from '@element-plus/icons-vue'
 const userlist = ref('[]')
 // 获取使用者
-onMounted(() => {
+const getuser = () => {
   request
     .get('/user/all')
     .then(function (response) {
@@ -20,6 +20,9 @@ onMounted(() => {
     .catch(function (error) {
       console.log(error)
     })
+}
+onMounted(() => {
+  getuser()
 })
 
 const size = ref('')
@@ -34,23 +37,16 @@ const iconStyle = computed(() => {
   }
 })
 // 切换状态
-const change = (id) => {
+const change = (id, value) => {
+  console.log(id)
   request
-    .post(
-      '/user/banned',
-      {
-        userId: id,
-        value: false
-      },
-      {
-        headers: {
-          'Access-Control-Allow-Origin': '*'
-        }
-      }
-    )
-    .then(function (response) {
-      console.log(response.data)
+    .post('/user/banned', {
+      userId: id,
+      value: !value
+    })
+    .then(() => {
       alert('删除成功')
+      getuser()
     })
     .catch(function (error) {
       console.log(error)
@@ -63,7 +59,6 @@ const change = (id) => {
     <template #content>人员管理</template>
   </HeadTitle>
   <section id="body">
-    <h1>这是人员管理</h1>
     <el-descriptions
       class="margin-top container"
       v-for="(item, index) in userlist"
@@ -74,7 +69,9 @@ const change = (id) => {
       border
     >
       <template #extra>
-        <el-button type="primary" @click="change(item.id)">remove</el-button>
+        <el-button type="primary" @click="change(item.userId, item.banned)"
+          >remove</el-button
+        >
       </template>
       <el-descriptions-item>
         <template #label>
@@ -85,7 +82,9 @@ const change = (id) => {
             Username
           </div>
         </template>
-        {{ item.username }}
+        <span :class="{ banned: item.banned === true }">{{
+          item.username
+        }}</span>
       </el-descriptions-item>
       <el-descriptions-item>
         <template #label>
@@ -96,7 +95,9 @@ const change = (id) => {
             Telephone
           </div>
         </template>
-        {{ item.telephone }}
+        <span :class="{ banned: item.banned === true }">{{
+          item.telephone
+        }}</span>
       </el-descriptions-item>
       <el-descriptions-item>
         <template #label>
@@ -107,7 +108,7 @@ const change = (id) => {
             status
           </div>
         </template>
-        {{ item.banned === false ? '正常' : '禁用' }}
+        <span> {{ item.banned === false ? '正常' : '禁用' }}</span>
       </el-descriptions-item>
       <el-descriptions-item>
         <template #label>
@@ -129,7 +130,10 @@ const change = (id) => {
             Address
           </div>
         </template>
-        No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+        <span :class="{ banned: item.banned === true }"
+          >No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu
+          Province</span
+        >
       </el-descriptions-item>
     </el-descriptions>
   </section>
@@ -158,5 +162,8 @@ const change = (id) => {
 }
 .container {
   padding: 0 40px;
+}
+.banned {
+  color: #e8e8e8;
 }
 </style>

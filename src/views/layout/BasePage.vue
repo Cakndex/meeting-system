@@ -1,46 +1,40 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import request from '@/utils/request'
 const handleClick = () => {
   console.log('click')
 }
-const tableData = ref([
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home'
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office'
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home'
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office'
-  }
-])
+const meetinglist = ref([])
+// 获取会议室
+const getmeeting = () => {
+  request
+    .get('/meeting/list')
+    .then(function (response) {
+      console.log(response)
+      meetinglist.value = response.data
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}
+onMounted(() => {
+  getmeeting()
+})
+// 删除会议
+const deletemeeting = (id) => {
+  console.log(`/meeting/delete/${'{' + id + '}'}`)
+  request
+    .post(`/meeting/delete/${'{' + id + '}'}`, {
+      meetId: id
+    })
+    .then(function (response) {
+      console.log(response)
+      getmeeting()
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}
 </script>
 
 <template>
@@ -50,22 +44,26 @@ const tableData = ref([
   <section id="body">
     <h1>这是会议室基础</h1>
     <el-table
-      :data="tableData"
+      :data="meetinglist"
       :border="true"
       style="margin-left: 10%; width: 80%"
     >
-      <el-table-column fixed prop="date" label="Date" width="150" />
-      <el-table-column prop="name" label="Name" width="120" />
-      <el-table-column prop="state" label="State" width="120" />
-      <el-table-column prop="city" label="City" width="120" />
+      <el-table-column fixed prop="name" label="Name" width="120" />
+      <el-table-column prop="meetingId" label="ID" width="120" />
+      <el-table-column prop="facility" label="facility" width="200" />
       <el-table-column prop="address" label="Address" width="600" />
-      <el-table-column prop="zip" label="Zip" width="120" />
       <el-table-column fixed="right" label="Operations" width="120">
-        <template #default>
+        <template #default="scope">
           <el-button link type="primary" size="small" @click="handleClick"
             >Detail</el-button
           >
-          <el-button link type="primary" size="small">Edit</el-button>
+          <el-button
+            link
+            type="primary"
+            size="small"
+            @click="deletemeeting(scope.row.meetingId)"
+            >Delete</el-button
+          >
         </template>
       </el-table-column>
     </el-table>

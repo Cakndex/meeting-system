@@ -7,8 +7,8 @@ import useUserStore from '@/stores/user.js'
 // 创建一个新的axios实例
 const userStore = useUserStore()
 const request = axios.create({
-  baseURL: 'http://192.168.1.113:63000/',
-  timeout: 5000
+  baseURL: 'http://192.168.1.107:63000/',
+  timeout: 2000
 })
 
 // 添加请求拦截器
