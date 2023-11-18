@@ -45,8 +45,9 @@ const router = createRouter({
         },
         // 查看会议室
         {
-          path: '/lookRoom',
-          component: () => import('@/views/layout/LookRoom.vue')
+          path: '/lookroom/:id',
+          component: () => import('@/views/layout/LookRoom.vue'),
+          props: true
         },
         // 添加会议室
         {

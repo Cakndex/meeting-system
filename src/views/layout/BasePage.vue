@@ -1,8 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import request from '@/utils/request'
-const handleClick = () => {
-  console.log('click')
+import { useRouter } from 'vue-router'
+const router = useRouter()
+// 查看会议室
+const editmeeting = (id) => {
+  console.log(id)
+  router.push({ path: '/lookroom/' + id, params: { id: id } })
 }
 const meetinglist = ref([])
 // 获取会议室
@@ -54,7 +58,11 @@ const deletemeeting = (id) => {
       <el-table-column prop="address" label="Address" width="600" />
       <el-table-column fixed="right" label="Operations" width="120">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click="handleClick"
+          <el-button
+            link
+            type="primary"
+            size="small"
+            @click="editmeeting(scope.row.meetingId)"
             >Detail</el-button
           >
           <el-button

@@ -66,24 +66,23 @@ const logout = () => {
           >🤝会议室基础</a
         >
       </div>
-
-      <div>
+      <!-- <div>
         <a
           :class="{ active: currentPath === '/lookroom' }"
           @click="getpath('/lookroom')"
           >👓查看会议室</a
         >
-      </div>
+      </div> -->
       <div>
         <a
-          :class="{ active: currentPath === '/lookroom' }"
+          :class="{ active: currentPath === '/addmeeting' }"
           @click="getpath('/addmeeting')"
           >✨添加会议室</a
         >
       </div>
       <div>
         <a
-          :class="{ active: currentPath === '/lookmeeting' }"
+          :class="{ active: currentPath === '/adminuser' }"
           @click="getpath('/adminuser')"
           >🧐人员管理</a
         >
