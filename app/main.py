@@ -12,6 +12,7 @@ from app.settings import limiter
 from app.database.db import init_database, SessionLocal
 from app.database.db_models import User
 from app.data import common as common_data
+from app.service import safety
 
 app = FastAPI()
 app.add_middleware(
@@ -43,7 +44,7 @@ async def startup():
     if not admin_user:
         admin_user = User(
             username="admin",
-            password="admin",
+            password=safety.encode_password("admin"),
             admin=True,
             telephone="114514",
         )
