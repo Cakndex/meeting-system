@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, getCurrentInstance } from 'vue'
 import request from '@/utils/request'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const meetId = ref()
 const instance = getCurrentInstance()
 const meetinglist = ref([])
@@ -20,15 +22,12 @@ onMounted(() => {
 
       if (foundMeeting) {
         // 找到了满足条件的元素
-        console.log(foundMeeting.facility)
         const facilityArray = foundMeeting.facility.split(',')
-
-        console.log(facilityArray)
         form.value = {
           ID: foundMeeting.meetingId,
           name: foundMeeting.name,
           status: true,
-          facilities: foundMeeting.facility,
+          facilities: facilityArray,
           address: foundMeeting.address
         }
       } else {
@@ -61,22 +60,22 @@ const cancel = () => {
 }
 // 提交
 const onSubmit = () => {
-  console.log('submit!')
-
   request
-    .post('/meeting/add', {
+    .post('/meeting/change', {
       id: form.value.ID,
       name: form.value.name,
       address: form.value.address,
       facilities: form.value.facilities
     })
     .then(function (response) {
+      console.log(form.value)
       console.log(response)
-      alert('添加成功')
+      alert('修改成功')
       cancel()
+      router.go(-1)
     })
     .catch(function (error) {
-      alert('post(/meeting/add)请求失败')
+      alert('post(/meeting/change)请求失败')
       console.log(error)
     })
 }
@@ -93,7 +92,7 @@ const rules = {
     <template #content>查看会议室</template>
   </HeadTitle>
   <section id="body">
-    <h1>添加会议室</h1>
+    <h3 @click="router.go(-1)">返回</h3>
     <el-form :model="form" label-width="120px" :rules="rules">
       <el-form-item label="会议室ID" prop="ID">
         <el-input v-model="form.ID" style="width: 150px" />
@@ -115,7 +114,7 @@ const rules = {
         <el-input v-model="form.address" type="textarea" style="width: 500px" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-button type="primary" @click="onSubmit">Finish</el-button>
         <el-button @click="cancel()">Cancel</el-button>
       </el-form-item>
     </el-form>
@@ -132,5 +131,14 @@ const rules = {
   height: 75vh;
   background-color: #fff;
   overflow-y: scroll;
+}
+h3 {
+  width: max-content;
+  cursor: pointer;
+  margin-left: 50px;
+  color: #1890ff;
+  padding: 5px 10px;
+  border: #1890ff 2px solid;
+  border-radius: 20px;
 }
 </style>

@@ -45,7 +45,6 @@ const change = (id, value) => {
       value: !value
     })
     .then(() => {
-      alert('删除成功')
       getuser()
     })
     .catch(function (error) {

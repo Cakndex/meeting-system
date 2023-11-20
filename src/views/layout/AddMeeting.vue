@@ -54,7 +54,10 @@ const rules = {
     <template #content>添加会议室</template>
   </HeadTitle>
   <section id="body">
-    <h1>添加会议室</h1>
+    <br />
+    <br />
+    <br />
+    <br />
     <el-form :model="form" label-width="120px" :rules="rules">
       <el-form-item label="会议室ID" prop="ID">
         <el-input v-model="form.ID" style="width: 150px" />
