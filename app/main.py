@@ -9,8 +9,9 @@ from slowapi import _rate_limit_exceeded_handler
 
 from app.api import user, meeting
 from app.settings import limiter
-from app.database.db import init_database,SessionLocal
+from app.database.db import init_database, SessionLocal
 from app.database.db_models import User
+from app.data import common as common_data
 
 app = FastAPI()
 app.add_middleware(
@@ -37,16 +38,16 @@ async def startup():
     logger.addHandler(handler)
     # 初始化数据库
     init_database()
-    with SessionLocal as sess:
+    with SessionLocal() as sess:
         admin_user = sess.query(User).all()
-        if not admin_user:
-            admin_user = User(
-                username="admin",
-                password="admin",
-                admin=True,
-                phone="114514",
-            )
-            sess.add(user)
+    if not admin_user:
+        admin_user = User(
+            username="admin",
+            password="admin",
+            admin=True,
+            telephone="114514",
+        )
+    common_data.add(admin_user)
 
 
 @app.get('/ping')
