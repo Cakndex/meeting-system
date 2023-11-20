@@ -40,15 +40,15 @@ async def startup():
     # 初始化数据库
     init_database()
     with SessionLocal() as sess:
-        admin_user = sess.query(User).all()
-    if not admin_user:
+        users = sess.query(User).all()
+    if not users:
         admin_user = User(
             username="admin",
             password=safety.encode_password("admin"),
             admin=True,
             telephone="114514",
         )
-    common_data.add(admin_user)
+        common_data.add(admin_user)
 
 
 @app.get('/ping')
