@@ -42,9 +42,9 @@ async def meeting_change(
         room = sess.query(Meeting).filter_by(meetingId=meeting_body.id).first()
     if room is None:
         return return_status(Error.MeetingNotExist, response)
-    room.name = meeting_body.name,
-    room.address = meeting_body.address,
-    room.capacity = ",".join(meeting_body.facilities),
+    room.name = meeting_body.name
+    room.address = meeting_body.address
+    room.facility = ",".join(meeting_body.facilities)
     common_data.update(room)
     return return_status(Error.NoError, response)
 

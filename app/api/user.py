@@ -131,6 +131,8 @@ async def remove_user_by_admin(
 ):
     """管理员封禁用户"""
     remove_user = user_data.find_by_userid(userToggle.userId)
+    if remove_user is None:
+        return status.return_status(Error.UserNotFound, response)
     if remove_user.admin is True:
         return status.return_status(Error.BanAdmin, response)
     remove_user.banned = userToggle.value

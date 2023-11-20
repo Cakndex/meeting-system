@@ -7,11 +7,9 @@ from starlette.middleware.cors import CORSMiddleware
 from slowapi.errors import RateLimitExceeded
 from slowapi import _rate_limit_exceeded_handler
 
-
 from app.api import user, meeting
 from app.settings import limiter
 from app.database.db import init_database
-from app.database.db_models import User
 
 app = FastAPI()
 app.add_middleware(
@@ -21,6 +19,7 @@ app.add_middleware(
     allow_methods=["*"],  # 允许所有 HTTP 方法
     allow_headers=["*"],  # 允许所有 HTTP 头部
 )
+
 app.include_router(meeting.meetRouter)
 app.include_router(user.userRouter)
 app.state.limiter = limiter
@@ -37,6 +36,7 @@ async def startup():
     logger.addHandler(handler)
     # 初始化数据库
     init_database()
+
 
 @app.get('/ping')
 def pong():
