@@ -7,7 +7,7 @@ import useUserStore from '@/stores/user.js'
 // 创建一个新的axios实例
 const userStore = useUserStore()
 const request = axios.create({
-  baseURL: 'http://192.168.1.111:63000/',
+  baseURL: 'http://127.0.0.1:63000/',
   timeout: 2000
 })
 

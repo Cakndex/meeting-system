@@ -78,7 +78,6 @@ const register = (username, password, isAdmin, telephone, job) => {
           })
         ),
           console.log(localStorage.getItem('userInfo'))
-        router.push('/')
       })
       .catch(function (error) {
         console.log(error)
@@ -279,8 +278,9 @@ const login = () => {
 <style lang="less" scoped>
 .login-page {
   display: flex;
-  height: 100vh;
+  height: 97.5vh;
   background-color: #fff;
+  overflow: hidden;
   .bg-col {
     margin-left: -5%;
     width: 50vw;
