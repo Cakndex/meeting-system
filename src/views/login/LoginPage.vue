@@ -8,16 +8,25 @@ import request from '@/utils/request'
 import useUserStore from '@/stores/user.js'
 const userStore = useUserStore()
 const router = useRouter()
-const isRegister = ref(true)
+const isRegister = ref(true) //判断是否注册
 const formModel = ref({
   isAdmin: '',
   username: '',
   password: '',
   repassword: '',
   telephone: '',
-  job: ''
+  job: '',
+  imgurl: ''
 })
-
+const registercheck = ref(false) // 摄像头遮罩
+// 子传父人脸url
+const sendurl = (url) => {
+  formModel.value.imgurl = url
+  console.log(formModel.value.imgurl)
+  face_value.value = '人脸已注册'
+}
+const face_value = ref('人脸注册')
+// 数据校验规则
 const rules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -55,14 +64,15 @@ const rules = {
 }
 
 // 注册
-const register = (username, password, isAdmin, telephone, job) => {
-  if (username && password && isAdmin && telephone && job) {
+const register = (username, password, isAdmin, telephone, job, imgurl) => {
+  if (username && password && isAdmin && telephone && job && imgurl) {
     request
       .post('/user/register', {
         isAdmin: isAdmin === '非管理员' ? false : true,
         password: password,
         telephone: telephone,
         username: username
+        // todo:需要上传url地址
       })
       .then(function (response) {
         console.log(response)
@@ -82,20 +92,6 @@ const register = (username, password, isAdmin, telephone, job) => {
       .catch(function (error) {
         console.log(error)
       })
-    // axios
-    //   .post('http://113.54.237.236:63000/user/register', {
-    //     isAdmin: false,
-    //     password: password,
-    //     telephone: telephone,
-    //     username: username
-    //   })
-    //   .then(function (response) {
-    //     console.log(response)
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error)
-    //   })
-
     alert('注册成功！')
     isRegister.value = true
     // router.push('/') // 跳转到根路由
@@ -199,13 +195,25 @@ const login = () => {
               class="button"
               type="primary"
               auto-insert-space
+              @click="registercheck = true"
+              :disabled="formModel.imgurl != ''"
+            >
+              {{ face_value }}
+            </el-button>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              class="button"
+              type="primary"
+              auto-insert-space
               @click="
                 register(
                   formModel.username,
                   formModel.password,
                   formModel.isAdmin,
                   formModel.telephone,
-                  formModel.job
+                  formModel.job,
+                  formModel.imgurl
                 ),
                   preregister()
               "
@@ -273,6 +281,13 @@ const login = () => {
     </div>
     <div class="form"></div>
   </main>
+  <div id="mask" v-if="registercheck">
+    <VideoIndex
+      :registercheck="registercheck"
+      @confirm="registercheck = false"
+      @imgData="sendurl"
+    ></VideoIndex>
+  </div>
 </template>
 
 <style lang="less" scoped>
@@ -332,5 +347,13 @@ const login = () => {
     width: 60vw;
     background: url('@/assets/bg1.jpg') no-repeat center / cover;
   }
+}
+#mask {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>
