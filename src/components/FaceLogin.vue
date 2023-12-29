@@ -1,31 +1,34 @@
 <script setup>
-import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+const router = useRouter()
 const videoElement = ref(null)
 const canvasElement = ref(null)
 const photoUrl = ref('')
 const imgData = ref('')
 const tracks = ref('')
-const emit = defineEmits(['confirm', 'imgData'])
-
-navigator.mediaDevices
-  .getUserMedia({ video: true })
-  .then(function (stream) {
-    tracks.value = stream
-    videoElement.value.srcObject = stream
-  })
-  .catch(function (error) {
-    console.error('获取摄像头权限失败:', error)
-  })
-
-// 确定照片
-const checkPhoto = () => {
-  alert('存储成功')
-  // 停止流
-  tracks.value.getTracks().forEach((track) => track.stop())
-  // 取消当前窗口
-  emit('confirm', false)
-  emit('imgData', imgData.value)
-}
+const count = ref(0)
+onMounted(() => {
+  // 调用摄像头
+  navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then(function (stream) {
+      tracks.value = stream
+      videoElement.value.srcObject = stream
+    })
+    .catch(function (error) {
+      console.error('获取摄像头权限失败:', error)
+    })
+  // 每隔0.5s拍照一次
+  setInterval(() => {
+    capturePhoto()
+    count.value++
+    if (count.value === 8) {
+      alert('识别成功')
+      router.push('/base')
+    }
+  }, 500)
+})
 
 // 拍照事件处理
 function capturePhoto() {
@@ -41,15 +44,11 @@ function capturePhoto() {
 </script>
 <template>
   <div class="container">
-    <h1>人脸信息注册</h1>
+    <h1>人脸登录</h1>
     <div class="video-wrapper">
       <video ref="videoElement" autoplay style="transform: scaleX(-1)"></video>
       <canvas ref="canvasElement"></canvas>
     </div>
-    <button @click="capturePhoto">拍照</button>
-    <button v-show="photoUrl != ''" @click="checkPhoto">确定</button>
-    <h2 v-show="photoUrl != ''">拍照结果</h2>
-    <img v-show="photoUrl != ''" :src="photoUrl" alt="" />
   </div>
 </template>
 <style scoped>
@@ -64,8 +63,8 @@ h1 {
   height: 100vh;
 }
 .video-wrapper {
-  width: 30%;
-  height: 35%;
+  width: 50%;
+  height: 65%;
   position: relative;
 }
 video,

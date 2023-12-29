@@ -134,6 +134,8 @@ const login = () => {
       console.log(error)
     })
 }
+// 人脸识别
+const face_login = ref(false)
 </script>
 
 <template>
@@ -267,6 +269,15 @@ const login = () => {
               class="button"
               type="primary"
               auto-insert-space
+              @click="face_login = true"
+              >人脸登录</el-button
+            >
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              class="button"
+              type="primary"
+              auto-insert-space
               @click="login()"
               >登录</el-button
             >
@@ -287,6 +298,9 @@ const login = () => {
       @confirm="registercheck = false"
       @imgData="sendurl"
     ></VideoIndex>
+  </div>
+  <div id="face_login" v-if="face_login">
+    <FaceLogin></FaceLogin>
   </div>
 </template>
 
@@ -348,7 +362,8 @@ const login = () => {
     background: url('@/assets/bg1.jpg') no-repeat center / cover;
   }
 }
-#mask {
+#mask,
+#face_login {
   position: absolute;
   top: 0;
   width: 100%;
