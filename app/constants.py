@@ -27,15 +27,6 @@ class Error(IntEnum):
     UserBanned = 16
     # Ban
     BanAdmin = 17
-    # Level
-    LevelNotFound = 18
-    CategoryNotFound = 19
-    InvalidScore = 20
-    InvalidTitle = 21
-    # Flag
-    FlagNotFound = 22
-    FlagIllegal = 23
-    FlagExists = 24
     # PERMISSION
     PermissionDenied = 25
     # INVITATION

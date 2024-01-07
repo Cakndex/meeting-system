@@ -18,7 +18,5 @@ Base = declarative_base()
 redis_db = StrictRedis.from_url(settings.REDIS_URL, decode_responses=True)
 
 
-# 邮件创建
-
 def init_database():
     return Base.metadata.create_all(bind=engine)
