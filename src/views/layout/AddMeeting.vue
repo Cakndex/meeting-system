@@ -22,8 +22,6 @@ const cancel = () => {
 }
 // 提交
 const onSubmit = () => {
-  console.log('submit!')
-
   request
     .post('/meeting/add', {
       id: form.value.ID,

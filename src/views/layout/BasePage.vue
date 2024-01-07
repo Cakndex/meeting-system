@@ -46,7 +46,7 @@ const deletemeeting = (id) => {
     <template #content>会议室基础</template>
   </HeadTitle>
   <section id="body">
-    <h1>这是会议室基础</h1>
+    <br /><br /><br />
     <el-table
       :data="meetinglist"
       :border="true"

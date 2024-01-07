@@ -86,15 +86,13 @@ const register = (username, password, isAdmin, telephone, job, imgurl) => {
             telephone: telephone,
             job: job
           })
-        ),
-          console.log(localStorage.getItem('userInfo'))
+        )
       })
       .catch(function (error) {
         console.log(error)
       })
     alert('注册成功！')
     isRegister.value = true
-    // router.push('/') // 跳转到根路由
   }
 }
 // 判断是否注册

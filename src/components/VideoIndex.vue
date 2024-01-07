@@ -86,7 +86,7 @@ button {
 img {
   transform: scaleX(-1);
   width: 24%;
-  height: 28%;
+  height: 35%;
   margin-bottom: 5%;
 }
 button {
